@@ -22,9 +22,9 @@ public class UserDTO {
     private String email;
     private String tel;
     private int nombreAnimaux;
-    private Collection<AnimauxDTO> animauxesByIdentifiant;
-    private Collection<CommentairesDTO> commentairesByIdentifiant;
-    private Collection<PublicationDTO> publicationsByIdentifiant;
-    private Collection<ReponsesDTO> reponsesByIdentifiant;
+    private Collection<Animaux> animauxesByIdentifiant;
+    private Collection<Commentaires> commentairesByIdentifiant;
+    private Collection<Publication> publicationsByIdentifiant;
+    private Collection<Reponses> reponsesByIdentifiant;
 
 }

@@ -1,5 +1,6 @@
 package com.example.animal_adoption.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+
 @Table(name = "users")
 public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

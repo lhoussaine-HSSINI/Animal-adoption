@@ -1,5 +1,6 @@
 package com.example.animal_adoption.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +37,7 @@ public class Animaux {
 
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "identifiant", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User usersByIdUser;
     @OneToMany(mappedBy = "animauxByIdAnim")
     private Collection<Publication> publicationsByIdAnimaux;

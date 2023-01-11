@@ -1,5 +1,8 @@
 package com.example.animal_adoption.model.dto;
 
+import com.example.animal_adoption.model.entity.Commentaires;
+import com.example.animal_adoption.model.entity.Reponses;
+import com.example.animal_adoption.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +16,18 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class ReponsesDTO {
     private int idReponse;
-    private int descriptionReponse;
+    private String descriptionReponse;
     private Timestamp dateReponse;
-    private CommentairesDTO commentairesByIdCommentaire;
-    private UserDTO usersByIdUser;
+    private Commentaires commentairesByIdCommentaire;
+    private User usersByIdUser;
+
+    public  ReponsesDTO  toReponsesDTO(Reponses reponses){
+        return  ReponsesDTO.builder()
+                .idReponse(reponses.getIdReponse())
+                .descriptionReponse(reponses.getDescriptionReponse())
+                .dateReponse(reponses.getDateReponse())
+                .commentairesByIdCommentaire(reponses.getCommentairesByIdCommentaire())
+                .usersByIdUser(reponses.getUsersByIdUser())
+                .build();
+    }
 }

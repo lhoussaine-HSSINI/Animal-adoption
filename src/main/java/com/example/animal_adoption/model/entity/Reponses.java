@@ -1,5 +1,6 @@
 package com.example.animal_adoption.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,15 +21,17 @@ public class Reponses {
     private int idReponse;
     @Basic
     @Column(name = "description_reponse", nullable = false)
-    private int descriptionReponse;
+    private String descriptionReponse;
     @Basic
     @Column(name = "date_reponse", nullable = false)
     private Timestamp dateReponse;
     @ManyToOne
     @JoinColumn(name = "id_commentaire", referencedColumnName = "id_commentaire", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Commentaires commentairesByIdCommentaire;
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "identifiant", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User usersByIdUser;
 
 }
