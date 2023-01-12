@@ -22,5 +22,4 @@ public class AnimauxDTO {
     private String description;
     private String photo;
     private int usersByIdUser;
-
 }

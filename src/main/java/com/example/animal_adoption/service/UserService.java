@@ -7,6 +7,7 @@ import com.example.animal_adoption.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,5 +41,11 @@ public class UserService {
         dto.setPublicationsByIdentifiant(userData.getPublicationsByIdentifiant());
         dto.setReponsesByIdentifiant(userData.getReponsesByIdentifiant());
         return dto;
+    }
+
+
+//    check user and get detail
+    public Optional<User> get_user_by_id(Integer id_user){
+        return userRepository.findById(id_user);
     }
  }

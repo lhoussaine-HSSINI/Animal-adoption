@@ -7,12 +7,14 @@ import com.example.animal_adoption.model.entity.User;
 import com.example.animal_adoption.service.AnimauxService;
 import com.example.animal_adoption.service.UserService;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -33,6 +35,8 @@ public class HomeController {
     private UserService userService;
     @Autowired
     private AnimauxService animauxService;
+    @Autowired
+    private ModelMapper mapper;
 
 //    page index
     @GetMapping("/")
@@ -49,29 +53,23 @@ public class HomeController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createanimaux(@ModelAttribute AnimauxDTO animauxDTO, @RequestParam("file") MultipartFile my_file) {
+        boolean Response_createanimaux =false;
+        String name_image =null;
+        AnimauxDTO animauxDTO_info = animauxDTO;
+        Optional<MultipartFile>  optionalMy_file = Optional.ofNullable(my_file);
+        if (optionalMy_file.isPresent()){
 
-//        smya  l2asliya  dyal image li dkhl client
-        String name_of_file = my_file.getOriginalFilename();
-        String extension_of_my_file =my_file.getOriginalFilename().substring(my_file.getOriginalFilename().lastIndexOf("."));
-
-//        daba  change dyal smya  dyal had image  :: andir  fsmya  dyalha  tarikh wnzid 3liha lwa9t fax  dkhlat dik image wnzid 3liha name dyal username dyal client
-        Date today = new Date();
-        SimpleDateFormat my_format_today = new SimpleDateFormat("yyyyMMddHHmmssS");
-        String name_jdid_dyal_image = my_format_today.format(today)+extension_of_my_file;
-
-//        path+name_jdid
-        System.out.println(name_jdid_dyal_image);
-        String path_directory_my_mage =".\\my_Upload_images\\"+name_jdid_dyal_image;
-
-//        copy image to docier my_Upload_images
-        try {
-
-            Files.copy(
-                    my_file.getInputStream(),
-                    Paths.get(path_directory_my_mage),
-                    StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            System.out.print(e.getMessage());
+            if (animauxService.test_type_file(optionalMy_file.get())){
+                name_image = animauxService.saveImageAnimaux(optionalMy_file.get());
+                User animaux_of_user = userService.get_user_by_id(animauxDTO_info.getUsersByIdUser()).get();
+                animauxDTO_info.setPhoto(name_image);
+                animauxDTO_info.setUsersByIdUser(animauxDTO_info.getUsersByIdUser());
+                Animaux animaux = mapper.map(animauxDTO_info, Animaux.class);
+                animaux.setUsersByIdUser(animaux_of_user);
+                System.out.println(animaux.getUsersByIdUser().getIdentifiant());
+            }
+        }else {
+            System.out.println("file  dyali  makaynx aslan");
         }
 
         return ResponseEntity.ok("succes to upload file image");
@@ -80,13 +78,9 @@ public class HomeController {
 
     @GetMapping("/get_image/{filename}")
     public Resource download_image(@PathVariable String filename){
-        Path pathToFile = Paths.get(".\\my_Upload_images\\"+filename);
-        UrlResource resource = null;
-        try {
-            resource = new UrlResource(pathToFile.toUri());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        return resource;
+        if (!filename.isEmpty())
+            return animauxService.getImageAnimaux(filename);
+        else
+            return null;
     }
 }
